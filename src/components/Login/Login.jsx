@@ -1,19 +1,58 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from "axios";
 import './Login.css';
 
+const server_url = "http://127.0.0.1:3000/api/v1/registration";
+
+
 const LoginForm = () => {
+  const [emailLogin, setEmailLogin] = useState('');
+  const [passwordLogin, setPasswordLogin] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+
+
+  const handleSubmitLogin = (event) => {
+    event.preventDefault();
+
+    if (!emailLogin || !passwordLogin) {
+      setError('Please fill in all fields.');
+      alert(error);
+      return;
+    } else {
+      const user = {
+        email: emailLogin,
+        password: passwordLogin
+      }
+
+    axios.post(server_url, user)
+    .then(response => {
+      console.log('Success:', response);
+      localStorage.setItem('token', JSON.stringify(response.data.token));
+      axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.stringify(response.data.token)}`;
+      navigate('/home')
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(error)
+    });
+    }
+
+  };
+
   return (
     <div className="login-form-container">
       <h2>Login</h2>
-      <form className="login-form">
+      <form className="login-form" onSubmit={handleSubmitLogin}>
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" name="email" />
+          <input type="email" id="email" name="email" value={emailLogin} onChange={(event) => setEmailLogin(event.target.value)} />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" name="password" />
+          <input type="password" id="password" name="password" value={passwordLogin} onChange={(event) => setPasswordLogin(event.target.value)} />
         </div>
         <button type="submit">Login</button>
       </form>
