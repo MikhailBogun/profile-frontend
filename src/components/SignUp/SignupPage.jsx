@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import './signup.css';
 
 
-import { HandleSubmitUser } from '../actions/user';
+import { HandleSubmitUser } from '../../actions/user';
 function SignupPage() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
+  const [error, setError] = useState(null);
+
 
 
   const navigate = useNavigate();
@@ -32,16 +34,26 @@ function SignupPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const user = {
-      username: username,
-      email: email,
-      password: password,
-      isAdmin: isAdmin
-    };
-    let response_user =  HandleSubmitUser(user);
-    if (response_user) {
-      navigate('/home')
+
+    if (!username || !email || !password) {
+      setError('Please fill in all fields.');
+      return;
+    } else {
+      const user = {
+        username: username,
+        email: email,
+        password: password,
+        isAdmin: isAdmin
+      };
+
+      HandleSubmitUser(user).then(() => {
+        navigate('/home')
+        })
+        .catch((err) => {
+          setError(err.message);
+        });
     }
+
   };
 
   return (
