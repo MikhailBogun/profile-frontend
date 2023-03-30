@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
+import Cookies from 'universal-cookie';
+
 import './Login.css';
+
+const cookies = new Cookies();
+axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get("jwt_access")}`;
+
+
 
 const server_url = "http://127.0.0.1:3000/api/v1/registration";
 
 
 const LoginForm = () => {
+
+
   const [emailLogin, setEmailLogin] = useState('');
   const [passwordLogin, setPasswordLogin] = useState('');
   const [error, setError] = useState(null);
@@ -26,12 +35,12 @@ const LoginForm = () => {
         email: emailLogin,
         password: passwordLogin
       }
-
     axios.post(server_url, user)
     .then(response => {
       console.log('Success:', response);
+      cookies.set('jwt_access', JSON.stringify(response.data.token))
       localStorage.setItem('token', JSON.stringify(response.data.token));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.stringify(response.data.token)}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
       navigate('/home')
     })
     .catch(error => {
