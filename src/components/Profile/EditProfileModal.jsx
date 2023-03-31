@@ -1,17 +1,37 @@
 import React, {useState} from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import axios from "axios";
 
-const EditProfileModal = ({ show, profile, handleClose }) => {
+
+const EditProfileModal = ({ show, profile, handleClose, url}) => {
 
   const [name, setName] = useState(profile.name);
   const [gender, setGender] = useState(profile.gender);
-  const [birthday, setBirthday] = useState(profile.birthdate);
+  const [birthdate, setBirthday] = useState(profile.birthdate);
   const [city, setCity] = useState(profile.city);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // TODO: Add code to handle form submission
-    handleClose()
+
+    axios.put(url, {  data: {
+      edit_data: {
+        id: profile.id,
+        name: name,
+        gender: gender,
+        birthdate: birthdate,
+        city: city
+      }
+    }})
+    .then(response => {
+      console.log('Success:', response);
+      handleClose()
+
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(error)
+      handleClose()
+    });
   };
 
   return (
@@ -49,7 +69,7 @@ const EditProfileModal = ({ show, profile, handleClose }) => {
             <Form.Label>Birthday</Form.Label>
             <Form.Control
               type="date"
-              value={birthday}
+              value={birthdate}
               onChange={(e) => setBirthday(e.target.value)}
             />
           </Form.Group>
@@ -66,11 +86,11 @@ const EditProfileModal = ({ show, profile, handleClose }) => {
         </Form>
       </Modal.Body>
       <Modal.Footer className='d-block text-center'>
-        <Button variant="secondary" onClick={handleSubmit}>
-          Close
+        <Button variant="secondary"onClick={handleSubmit} >
+        <span className="bi bi-check">save</span>
         </Button>
-        <Button variant="primary" >
-          Save Changes
+        <Button variant="secondary" onClick={handleClose}>
+        <span class="btn-label"><i className="bi bi-x">close</i></span>
         </Button>
       </Modal.Footer>
     </Modal>

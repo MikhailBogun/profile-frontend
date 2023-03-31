@@ -27,6 +27,7 @@ function ProfileCard({ profile, obtainProfiles, url}) {
   }
 
   const handleEditModalClose = () => {
+    obtainProfiles();
     setShowEditModal(false);
   }
   return (
@@ -47,7 +48,7 @@ function ProfileCard({ profile, obtainProfiles, url}) {
         <button className="profile-card-edit-button" onClick={handleEditClick}>Edit</button>
         <button className="profile-card-delete-button" onClick={DeleteCard}>Delete</button>
       </div>
-      <EditProfileModal show={showEditModal} profile={profile} handleClose={handleEditModalClose} />
+      <EditProfileModal show={showEditModal} profile={profile} handleClose={handleEditModalClose} url={url}/>
     </div>
   );
 }

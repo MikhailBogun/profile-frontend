@@ -41,7 +41,7 @@ const LoginForm = () => {
       cookies.set('jwt_access', JSON.stringify(response.data.token))
       localStorage.setItem('token', JSON.stringify(response.data.token));
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-      navigate('/home')
+      navigate('/profiles')
     })
     .catch(error => {
       console.error('Error:', error);

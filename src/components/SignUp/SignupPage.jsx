@@ -47,7 +47,7 @@ function SignupPage() {
       };
 
       HandleSubmitUser(user).then(() => {
-        navigate('/home')
+        navigate('/profiles')
         })
         .catch((err) => {
           setError(err.message);
