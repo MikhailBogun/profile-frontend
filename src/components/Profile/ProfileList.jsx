@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import axios from "axios";
 import ProfileCard from "./ProfileCard";
@@ -56,9 +56,11 @@ function ProfileList({all}) {
 
   useEffect(() => {
     getProfiles()
-  }, []);
+  }, [all]);
 
   return (
+    <div className="main-container">
+
     <div className="profile-list">
       {profiles.map((profile) => (
         <ProfileCard
@@ -76,6 +78,7 @@ function ProfileList({all}) {
           onCloseModal={handleCloseModal}
         />
       )} */}
+    </div>
     </div>
     
   );

@@ -12,8 +12,8 @@ const EditProfileModal = ({ show, profile, handleClose, url}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    axios.put(url, {  data: {
+    let current_url = url + '/' + profile.id;
+    axios.put(current_url , {  data: {
       edit_data: {
         id: profile.id,
         name: name,
@@ -35,14 +35,14 @@ const EditProfileModal = ({ show, profile, handleClose, url}) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose} centered className='text-center modal-sm'>
+    <Modal show={show} onHide={handleClose} centered className=' modal-sm'>
       <Modal.Header closeButton>
         <Modal.Title >Edit Profile</Modal.Title>
       </Modal.Header>
       <Modal.Body>
       <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formName">
-            <Form.Label>Name</Form.Label>
+            <Form.Label className="col-sm-3 col-form-label text-sm-begin" >name</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter name"
@@ -52,21 +52,33 @@ const EditProfileModal = ({ show, profile, handleClose, url}) => {
           </Form.Group>
 
           <Form.Group controlId="formGender">
-            <Form.Label>Gender</Form.Label>
-            <Form.Control
-              as="select"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-            >
-              <option>Select gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </Form.Control>
+            <Form.Label className="col-sm-3 col-form-label ">gender</Form.Label>
+            <div className="text-center">
+              <Form.Check
+                inline
+                type="radio"
+                label="Male"
+                name="gender"
+                id="gender-male"
+                value="male"
+                checked={gender === 'male'}
+                onChange={(e) => setGender(e.target.value)}
+              />
+              <Form.Check
+                inline
+                type="radio"
+                label="Female"
+                name="gender"
+                id="gender-female"
+                value="female"
+                checked={gender === 'female'}
+                onChange={(e) => setGender(e.target.value)}
+              />
+            </div>
           </Form.Group>
 
           <Form.Group controlId="formBirthday">
-            <Form.Label>Birthday</Form.Label>
+            <Form.Label className='col-sm-3 col-form-label text-sm-begin'>birthday</Form.Label>
             <Form.Control
               type="date"
               value={birthdate}
@@ -75,7 +87,7 @@ const EditProfileModal = ({ show, profile, handleClose, url}) => {
           </Form.Group>
 
           <Form.Group controlId="formCity">
-            <Form.Label>City</Form.Label>
+            <Form.Label className="col-sm-3 col-form-label" >city</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter city"

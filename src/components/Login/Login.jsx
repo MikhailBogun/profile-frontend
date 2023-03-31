@@ -39,7 +39,8 @@ const LoginForm = () => {
     .then(response => {
       console.log('Success:', response);
       cookies.set('jwt_access', JSON.stringify(response.data.token))
-      localStorage.setItem('token', JSON.stringify(response.data.token));
+      cookies.set('user_id', JSON.stringify(response.data.user.id))
+      cookies.set('username', JSON.stringify(response.data.user.username))
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
       navigate('/profiles')
     })

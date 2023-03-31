@@ -35,6 +35,10 @@ function Header() {
   }
 
 
+  function HelpForNavigate(where) {
+    navigate('/'+where, { state:'weHave' })
+  }
+
   return (
     // <nav className="navbar navbar-expand-lg navbar-light bg-light">
     //   <div className="container-fluid">
@@ -71,10 +75,11 @@ function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="#dashboard">Dashboard</Nav.Link>
+            <Nav.Link onClick={()=>{ HelpForNavigate('users')}} >Users</Nav.Link>
+            <Nav.Link onClick={()=>{ HelpForNavigate('dashboard')}}>Dashboard</Nav.Link>
             <NavDropdown title="Profile" id="basic-nav-dropdown">
-              <NavDropdown.Item href="/profiles">My Profile</NavDropdown.Item>
-              <NavDropdown.Item href="/all_profiles">
+              <NavDropdown.Item onClick={()=>{ HelpForNavigate('profiles')}}>My Profile</NavDropdown.Item>
+              <NavDropdown.Item onClick={()=>{ HelpForNavigate('all_profiles')}}>
                 All Profiles
               </NavDropdown.Item>
             </NavDropdown>

@@ -13,7 +13,7 @@ function ProfileCard({ profile, obtainProfiles, url}) {
   }
 
   const DeleteCard = () => {
-    axios.delete(url, {  data: {
+    axios.delete(url+'/'+ profile.id, {  data: {
       id_profile: profile.id
     }})
     .then(response => {
