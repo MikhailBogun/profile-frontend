@@ -8,6 +8,7 @@ import Login from './components/Login/Login';
 import UserList from './components/User/UserList';
 import UserDetails from './components/User/UserDetails';
 import { Layout } from './components/Layout';
+import DashboardInfo from './components/Dashboard/Dashboard';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -27,7 +28,7 @@ function App() {
                 </Route>
                 <Route path="/user/:id" element={<UserDetails />} />
 
-                {/* <Route path=":dashboard" element={<Main page={'dashboar'}/>} /> */}
+                <Route path=":dashboard" element={<DashboardInfo />} />
             </Route>
             </Routes>
     </BrowserRouter>
