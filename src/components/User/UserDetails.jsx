@@ -73,7 +73,7 @@ function UserDetails() {
           <button className="btn btn-danger mx-2" onClick={() => { DeleteCard()}}>Delete</button>
         </div>
       </div>
-      <ProfileList id={user.id}></ProfileList>
+      <ProfileList id={user.id} ></ProfileList>
       <EditUserModal show={showEditModal} user={user} handleClose={handleEditModalClose} url={current_url}/>
 
     </div>

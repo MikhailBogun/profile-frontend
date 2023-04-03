@@ -4,11 +4,11 @@ import Cookies from 'universal-cookie';
 import axios from "axios";
 import ProfileCard from "./ProfileCard";
 
+
 const cookies = new Cookies();
 
 
 function ProfileList({id, all}) {
-  console.log("ID ", all)
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState([]);
   const [main_user_id, setMainUserId] = useState(cookies.get('user_id'));
@@ -44,7 +44,6 @@ function ProfileList({id, all}) {
     });
   }
 
-
   const getProfiles = () => {
     console.log(all)
     if(all) {
@@ -70,9 +69,18 @@ function ProfileList({id, all}) {
           key={profile.id}
           profile={profile}
           obtainProfiles={getProfiles}
-          url={current_url}
-        />
+          url={current_url} 
+          isUpdating={true}
+          />
       ))}
+
+    { id || all ? "" 
+    :         <ProfileCard
+              key={Math.floor(Math.random() * 8888)}
+              obtainProfiles={getProfiles}
+              url={current_url}
+             />
+    }
     </div>
     </div>
     
