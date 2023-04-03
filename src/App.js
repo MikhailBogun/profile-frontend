@@ -3,7 +3,6 @@ import './App.css';
 import React from 'react';
 
 import SignupPage from './components/SignUp/SignupPage';
-import Main from './components/Main';
 import ProfileList from './components/Profile/ProfileList';
 import Login from './components/Login/Login';
 import UserList from './components/User/UserList';
@@ -28,7 +27,7 @@ function App() {
                 </Route>
                 <Route path="/user/:id" element={<UserDetails />} />
 
-                <Route path=":dashboard" element={<Main page={'dashboar'}/>} />
+                {/* <Route path=":dashboard" element={<Main page={'dashboar'}/>} /> */}
             </Route>
             </Routes>
     </BrowserRouter>

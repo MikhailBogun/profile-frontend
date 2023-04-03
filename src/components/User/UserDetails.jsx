@@ -10,6 +10,8 @@ import EditUserModal from './EditUserModal';
 // import "./UserCard.css";
 
 function UserDetails() {
+  const navigate = useNavigate();
+
   const location = useLocation()
   const nestedLevel = location.pathname.split('/').pop();
   const [showEditModal, setShowEditModal] = useState(false);
@@ -58,7 +60,8 @@ function UserDetails() {
     })
     .catch(error => {
       console.error('Error:', error);
-      alert(error)
+      alert(error);
+      navigate('/users');
       // handleClose()
     });
   }
@@ -81,6 +84,21 @@ function UserDetails() {
     setShowEditModal(false);
   }
 
+  const DeleteCard = () => {
+    axios.delete(current_url)
+    .then(response => {
+      console.log('Success:', response);
+      navigate('/users');
+
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(error);
+      navigate('/users');
+
+    });
+  }
+
 
   return (
     <div>
@@ -90,7 +108,7 @@ function UserDetails() {
           <p className="card-text">{user.email}</p>
           <p className="card-text">{user.isAdmin ? "Admin" : "User"}</p>
           <button className="btn btn-primary mx-2" onClick={handleEditClick}>Edit</button>
-          <button className="btn btn-danger mx-2">Delete</button>
+          <button className="btn btn-danger mx-2" onClick={() => { DeleteCard()}}>Delete</button>
         </div>
       </div>
       <ProfileList></ProfileList>
