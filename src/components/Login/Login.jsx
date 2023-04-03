@@ -9,10 +9,6 @@ const cookies = new Cookies();
 axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.get("jwt_access")}`;
 
 
-
-const server_url = "http://127.0.0.1:3000/api/v1/registration";
-
-
 const LoginForm = () => {
 
 
@@ -20,6 +16,8 @@ const LoginForm = () => {
   const [passwordLogin, setPasswordLogin] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  let current_url = process.env.REACT_APP_BACKEND_URL + 'registration';
 
 
 
@@ -35,7 +33,7 @@ const LoginForm = () => {
         email: emailLogin,
         password: passwordLogin
       }
-    axios.post(server_url, user)
+    axios.post(current_url, user)
     .then(response => {
       console.log('Success:', response);
       cookies.set('jwt_access', JSON.stringify(response.data.token))

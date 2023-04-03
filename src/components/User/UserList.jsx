@@ -7,25 +7,25 @@ import UserCard from "./UserCard";
 function UserList() {
   const navigate = useNavigate();
 
-
-  const url_users = "http://127.0.0.1:3000/api/v1/user";
-
   const [users, setUsers] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  function handleOpenModal(profile) {
+  const current_url = process.env.REACT_APP_BACKEND_URL + "user";
+
+
+  const handleOpenModal = (profile) => {
     setSelectedProfile(profile);
     setIsModalOpen(true);
   }
 
-  function handleCloseModal() {
+  const handleCloseModal = () => {
     setSelectedProfile(null);
     setIsModalOpen(false);
   }
 
-  function handleSaveChanges(updatedUser) {
+  const handleSaveChanges = (updatedUser) => {
     const updatedUsers = users.map((profile) => {
       if (profile.id === updatedUser.id) {
         return updatedUser;
@@ -38,7 +38,7 @@ function UserList() {
 
 
   const getUsers = () => {
-    axios.get(url_users)
+    axios.get(current_url)
     .then(response => {
       console.log('Success:', response);
       setUsers(response.data)
@@ -61,7 +61,7 @@ function UserList() {
           key={user.id}
           user={user}
           obtainUsers={getUsers}
-          url={url_users}
+          url={current_url}
         />
       ))}
     </div>

@@ -6,21 +6,18 @@ import ProfileCard from "./ProfileCard";
 
 function ProfileList({all}) {
   const navigate = useNavigate();
-
-
-  const url_profiles = "http://127.0.0.1:3000/api/v1/section";
-
   const [profiles, setProfiles] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  function handleOpenModal(profile) {
+  let current_url = process.env.REACT_APP_BACKEND_URL + 'profile';
+
+  const handleOpenModal = (profile) => {
     setSelectedProfile(profile);
     setIsModalOpen(true);
   }
 
-  function handleCloseModal() {
+  const handleCloseModal = () => {
     setSelectedProfile(null);
     setIsModalOpen(false);
   }
@@ -38,7 +35,7 @@ function ProfileList({all}) {
 
 
   const getProfiles = () => {
-    axios.get(url_profiles, {
+    axios.get(current_url, {
       params: {
         all: all
       }
@@ -67,17 +64,9 @@ function ProfileList({all}) {
           key={profile.id}
           profile={profile}
           obtainProfiles={getProfiles}
-          url={url_profiles}
+          url={current_url}
         />
       ))}
-
-      {/* {isModalOpen && (
-        <EditProfileModal
-          profile={selectedProfile}
-          onSaveChanges={handleSaveChanges}
-          onCloseModal={handleCloseModal}
-        />
-      )} */}
     </div>
     </div>
     

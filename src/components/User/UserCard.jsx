@@ -9,8 +9,10 @@ import "./UserCard.css";
 
 function UserCard({ user, obtainProfiles, url}) {
   const navigate = useNavigate();
-
   const [showEditModal, setShowEditModal] = useState(false);
+  // let current_url = process.env.REACT_APP_BACKEND_URL + 'user/'+user.id;
+  
+
 
   // const handleEditClick = () => {
   //   setShowEditModal(true);
@@ -38,7 +40,6 @@ function UserCard({ user, obtainProfiles, url}) {
 
   const OpenUserEdit = (event,user ) => {
     event.preventDefault();
-    console.log(user)
     navigate('/user/'+user.id, { state: { user: user }})
   }
 

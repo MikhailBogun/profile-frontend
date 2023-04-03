@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState} from 'react';
 // import EditProfileModal from './EditProfileModal';
 import axios from "axios";
 import { useLocation, useNavigate } from 'react-router-dom';
 import ProfileList from '../Profile/ProfileList';
+import EditUserModal from './EditUserModal';
 
 
 
 // import "./UserCard.css";
 
 function UserDetails() {
-  const location = useLocation().state
-  const [user, setUser] = useState(location.user)
-  console.log(user)
+  const location = useLocation()
+  const nestedLevel = location.pathname.split('/').pop();
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const [user, setUser] = useState('')
+  let current_url = process.env.REACT_APP_BACKEND_URL + 'user/'+nestedLevel;
+
 
   // // const handleEditClick = () => {
   // //   setShowEditModal(true);
@@ -43,26 +48,54 @@ function UserDetails() {
   //   navigate('/user/'+user.id)
   // }
 
-  function onEdit() {
+  const obtainUser = () => {
+    axios.get(current_url)
+    .then(response => {
+      console.log('Success:', response);
+      setUser(response.data.user)
+      // handleClose()
 
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(error)
+      // handleClose()
+    });
   }
+
+  useEffect(() => {
+    obtainUser()
+  }, [nestedLevel]);
+  
 
   function onDelete() {
 
   }
 
+  const handleEditClick = () => {
+    setShowEditModal(true);
+  }
+
+  const handleEditModalClose = () => {
+    obtainUser();
+    setShowEditModal(false);
+  }
+
+
   return (
     <div>
-    <div className="d-flex justify-content-center align-items-center vh-200">
-      <div className="text-center">
-      <h5 className="card-title">{user.username}</h5>
-        <p className="card-text">{user.email}</p>
-        <p className="card-text">{user.isAdmin ? "Admin" : "User"}</p>
-        <button className="btn btn-primary mx-2">Edit</button>
-        <button className="btn btn-danger mx-2">Delete</button>
+      <div className="d-flex justify-content-center align-items-center vh-200">
+        <div className="text-center">
+        <h5 className="card-title">{user.username}</h5>
+          <p className="card-text">{user.email}</p>
+          <p className="card-text">{user.isAdmin ? "Admin" : "User"}</p>
+          <button className="btn btn-primary mx-2" onClick={handleEditClick}>Edit</button>
+          <button className="btn btn-danger mx-2">Delete</button>
+        </div>
       </div>
-    </div>
-    <ProfileList></ProfileList>
+      <ProfileList></ProfileList>
+      <EditUserModal show={showEditModal} user={user} handleClose={handleEditModalClose} url={current_url}/>
+
     </div>
   );
 }
