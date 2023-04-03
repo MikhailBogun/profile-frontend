@@ -1,45 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import axios from "axios";
 import ProfileCard from "./ProfileCard";
 
-function ProfileList({all}) {
+const cookies = new Cookies();
+
+
+function ProfileList({id, all}) {
+  console.log("ID ", all)
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState([]);
-  const [selectedProfile, setSelectedProfile] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [main_user_id, setMainUserId] = useState(cookies.get('user_id'));
 
   let current_url = process.env.REACT_APP_BACKEND_URL + 'profile';
 
-  const handleOpenModal = (profile) => {
-    setSelectedProfile(profile);
-    setIsModalOpen(true);
-  }
 
-  const handleCloseModal = () => {
-    setSelectedProfile(null);
-    setIsModalOpen(false);
-  }
+  const getUserProfile = (id) => {
 
-  function handleSaveChanges(updatedProfile) {
-    const updatedProfiles = profiles.map((profile) => {
-      if (profile.id === updatedProfile.id) {
-        return updatedProfile;
-      }
-      return profile;
-    });
-    setProfiles(updatedProfiles);
-    setIsModalOpen(false);
-  }
-
-
-  const getProfiles = () => {
-    axios.get(current_url, {
-      params: {
-        all: all
-      }
-    })
+    axios.get(current_url + '/' + id)
     .then(response => {
       console.log('Success:', response);
       setProfiles(response.data.profiles)
@@ -51,9 +30,36 @@ function ProfileList({all}) {
     });
   }
 
+  const getUsersProfile = () => {
+    console.log('getUsersProfile')
+    axios.get(current_url)
+    .then(response => {
+      console.log('Success:', response);
+      setProfiles(response.data.profiles)
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(error);
+      navigate('/');
+    });
+  }
+
+
+  const getProfiles = () => {
+    console.log(all)
+    if(all) {
+      getUsersProfile();
+    }
+    else {
+      let current_id = id || main_user_id;
+      getUserProfile(current_id);
+    }
+  }
+
   useEffect(() => {
+    setMainUserId(cookies.get('user_id'))
     getProfiles()
-  }, [all]);
+  }, [all, id]);
 
   return (
     <div className="main-container">
